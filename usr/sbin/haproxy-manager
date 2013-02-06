@@ -1,0 +1,31 @@
+#!/usr/bin/python
+import sys
+import getopt
+
+from supay import Daemon
+
+from haproxy_manager import server
+
+if __name__ == '__main__':
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "a:", ["action="])
+    except getopt.GetoptError, err:
+        print str(err)
+
+    action = 'start'
+    for o, a in opts:
+        if o in ('-a', '--action'):
+            action = a
+
+    daemon = Daemon(name='haproxy-manager', catch_all_log='/var/log/haproxy-manager.log', pid_dir='/var/run/haproxy-manager')
+    if action == 'start':
+        daemon.start()
+        server.run()
+    elif action == 'status':
+        daemon.status()
+        pass
+    elif action == 'stop':
+        daemon.stop()
+        pass
+    elif action == 'foreground':
+        server.run()
