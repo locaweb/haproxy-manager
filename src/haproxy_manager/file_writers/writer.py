@@ -23,12 +23,11 @@ from Cheetah.Template import Template
 
 class Writer(object):
 
-    def __init__(self, options={}):
-        self.opt = options
+    def __init__(self):
         self.tpl = os.path.join(os.path.dirname(__file__), 'templates/%s')
 
-    def write(self, template, output_path):
-        render = Template(file=self.tpl % template, searchList=[self.opt])
+    def write(self, template, output_path, options={}):
+        render = Template(file=self.tpl % template, searchList=[options])
 
         with open(output_path, 'w') as file:
             file.write(str(render))

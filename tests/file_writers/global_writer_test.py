@@ -15,15 +15,15 @@
 #
 # @author: Willian Molinari (PotHix), Locaweb.
 
-from haproxy_manager.file_writers.writer import Writer
+from haproxy_manager.file_writers.global_writer import Global
 
 import unittest
 
 
-class WriterTest(unittest.TestCase):
+class GlobalTest(unittest.TestCase):
 
     def setUp(self):
-        self.writer = Writer()
+        self.writer = Global()
 
-    def test_file_writing(self):
-        self.writer.write('global.tmpl', 'tests/output/writer.cfg')
+    def test_inheritance_to_write_files(self):
+        self.writer.write('global.tmpl', 'tests/output/global.cfg')
