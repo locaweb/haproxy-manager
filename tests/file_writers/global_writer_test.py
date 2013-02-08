@@ -26,4 +26,4 @@ class GlobalTest(unittest.TestCase):
         self.writer = Global()
 
     def test_inheritance_to_write_files(self):
-        self.writer.write('global.tmpl', 'tests/output/global.cfg')
+        self.writer.write('global', 'tests/output/global.cfg')

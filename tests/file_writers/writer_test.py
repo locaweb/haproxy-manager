@@ -26,4 +26,4 @@ class WriterTest(unittest.TestCase):
         self.writer = Writer()
 
     def test_file_writing(self):
-        self.writer.write('global.tmpl', 'tests/output/writer.cfg')
+        self.writer.write('global', 'tests/output/writer.cfg')

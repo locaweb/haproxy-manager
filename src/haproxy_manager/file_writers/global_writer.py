@@ -23,5 +23,9 @@ from Cheetah.Template import Template
 
 class Global(Writer):
 
+    def __init__(self):
+        super(Global, self).__init__()
+        self.output_path = '/etc/haproxy/conf.d/00-global.conf'
+
     def write_file(self):
-        pass
+        self.write('global', self.output_path, {'maxconn': 10000})
