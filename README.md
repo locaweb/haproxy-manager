@@ -1,12 +1,17 @@
-# Haproxy manager
+Haproxy manager
+===============
 
 Haproxy manager is a simple daemon that generates haproxy configuration files.
 
-## Documentation
+
+Documentation
+-------------
 
 The documentation will be available here: http://haproxymanager.readthedocs.org
 
-## Development
+
+Development
+-----------
 
 Almost everything you need will be available via `dev.makefile`.
 
@@ -16,9 +21,10 @@ To bootstrap your environment just run:
 
 All the dependencies will be installed using virtualenv on .venv directory.
 
-Just read the `dev.makefile` file for more informations about the other available tools.
+Just read the `dev.makefile` file for more informations on how to run the commands.
 
 
-## License
+License
+-------
 
 APACHE 2.0
