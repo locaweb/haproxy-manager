@@ -1,0 +1,8 @@
+backend b_name
+
+    mode        tcp
+    balance     roundrobin
+    contimeout  30000
+    srvtimeout  300000
+    retries     2
+    server      name 10.10.10.10:40003 check inter 1000
