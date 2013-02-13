@@ -23,27 +23,27 @@ from Cheetah.Template import Template
 
 class FileWriter(object):
 
-    def __init__(self, output_path):
+    def __init__(self, output_path="/etc/haproxy/conf.d/"):
         self.tpl = os.path.join(os.path.dirname(__file__), 'templates/%s.tmpl')
-        self.output_path = "/etc/haproxy/conf.d/"
-
-    def write(self, template, output_path, options={}):
-        render = Template(file=self.tpl % template, searchList=[options])
-
-        with open(output_path, 'w') as file:
-            file.write(str(render))
+        self.output_path = output_path
 
     def global_writer(self, opts={}):
         name = "global"
         file_name = "00-%s" % name
-        self.write(self.name, self.output_path + file_name + ".conf", opts)
+        self._write(name, self.output_path + file_name + ".conf", opts)
 
     def frontend_writer(self, opts={}):
         name = "frontend"
         file_name = "90-%s-%s" % (name, opts["name"])
-        self.write(self.name, self.output_path + file_name + ".conf", opts)
+        self._write(name, self.output_path + file_name + ".conf", opts)
 
     def backend_writer(self, opts={}):
         name = "frontend"
         file_name = "90-%s-%s" % (name, opts["name"])
-        self.write(self.name, self.output_path + file_name + ".conf", opts)
+        self._write(name, self.output_path + file_name + ".conf", opts)
+
+    def _write(self, template, output_path, options={}):
+        render = Template(file=self.tpl % template, searchList=[options])
+
+        with open(output_path, 'w') as file:
+            file.write(str(render))

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # Copyright 2013 Locaweb.
 # All Rights Reserved.
 #
@@ -15,3 +14,16 @@
 #    limitations under the License.
 #
 # @author: Willian Molinari (PotHix), Locaweb.
+
+from haproxy_manager.file_writer import FileWriter
+
+import unittest
+
+
+class FileWriterTest(unittest.TestCase):
+
+    def setUp(self):
+        self.writer = FileWriter('tests/output/')
+
+    def test_file_writing(self):
+        self.writer.global_writer({"name": "machine0001"})
