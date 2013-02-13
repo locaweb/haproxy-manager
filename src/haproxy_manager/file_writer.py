@@ -30,20 +30,20 @@ class FileWriter(object):
     def global_writer(self, opts={}):
         name = "global"
         file_name = "00-%s" % name
-        self._write(name, self.output_path + file_name + ".conf", opts)
+        self._write(name, file_name, opts)
 
     def frontend_writer(self, opts={}):
         name = "frontend"
         file_name = "90-%s-%s" % (name, opts["name"])
-        self._write(name, self.output_path + file_name + ".conf", opts)
+        self._write(name, file_name, opts)
 
     def backend_writer(self, opts={}):
-        name = "frontend"
+        name = "backend"
         file_name = "90-%s-%s" % (name, opts["name"])
-        self._write(name, self.output_path + file_name + ".conf", opts)
+        self._write(name, file_name, opts)
 
-    def _write(self, template, output_path, options={}):
-        render = Template(file=self.tpl % template, searchList=[options])
+    def _write(self, template, file_name, opts={}):
+        render = Template(file=self.tpl % template, searchList=[opts])
 
-        with open(output_path, 'w') as file:
+        with open(self.output_path + file_name + ".conf", 'w') as file:
             file.write(str(render))

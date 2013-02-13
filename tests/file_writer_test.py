@@ -25,5 +25,11 @@ class FileWriterTest(unittest.TestCase):
     def setUp(self):
         self.writer = FileWriter('tests/output/')
 
-    def test_file_writing(self):
+    def test_global_file_writing(self):
         self.writer.global_writer({"name": "machine0001"})
+
+    def test_backend_file_writing(self):
+        self.writer.backend_writer({"name": "machine0001"})
+
+    def test_frontend_file_writing(self):
+        self.writer.frontend_writer({"name": "machine0001"})
