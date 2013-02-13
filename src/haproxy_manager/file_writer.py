@@ -45,5 +45,5 @@ class FileWriter(object):
     def _write(self, template, file_name, opts={}):
         render = Template(file=self.tpl % template, searchList=[opts])
 
-        with open(self.output_path + file_name + ".conf", 'w') as file:
+        with open(self.output_path + file_name + ".cfg", 'w') as file:
             file.write(str(render))

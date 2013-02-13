@@ -1,3 +1,3 @@
 *.pyc
 .noseids
-tests/output
+tests/output/*.cfg
