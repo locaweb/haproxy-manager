@@ -21,7 +21,7 @@ import os
 from Cheetah.Template import Template
 
 
-class Writer(object):
+class FileWriter(object):
 
     def __init__(self, output_path):
         self.tpl = os.path.join(os.path.dirname(__file__), 'templates/%s.tmpl')
