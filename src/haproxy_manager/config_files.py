@@ -43,12 +43,12 @@ class ConfigFiles(object):
         self._write(name, file_name, opts)
 
     def read(self, ftype, fname):
-        if file_type is "frontend" or file_type is "backend":
+        if ftype == "frontend" or ftype == "backend":
             prefix = "90"
         else:
             prefix = "00"
 
-        with open("%s/%s-%s-%s.cfg" % (prefix, self.path, ftype, fname)) as f:
+        with open("%s/%s-%s-%s.cfg" % (self.path, prefix, ftype, fname)) as f:
             file_params =  dict([
                 map(lambda x: x.strip(), i.strip().split(" ", 1))
                 for i in f.readlines()
