@@ -23,9 +23,9 @@ from Cheetah.Template import Template
 
 class FileWriter(object):
 
-    def __init__(self, output_path="/etc/haproxy/conf.d/"):
+    def __init__(self, path="/etc/haproxy/conf.d/"):
         self.tpl = os.path.join(os.path.dirname(__file__), 'templates/%s.tmpl')
-        self.output_path = output_path
+        self.path = path
 
     def global_writer(self, opts={}):
         name = "global"
@@ -42,8 +42,22 @@ class FileWriter(object):
         file_name = "90-%s-%s" % (name, opts["name"])
         self._write(name, file_name, opts)
 
+    def read(self, file_type, file_name):
+        if file_type is "frontend" or file_type is "backend":
+            path = "%s/90-%s-%s.cfg" % (self.path, file_type, file_name)
+        else:
+            path = "%s/00-%s-%s.cfg" % (self.path, file_type, file_name)
+
+        with open(path) as f:
+            file_params =  dict([
+                map(lambda x: x.strip(), i.strip().split(" ", 1))
+                for i in f.readlines()
+            ])
+
+            return file_params
+
     def _write(self, template, file_name, opts={}):
         render = Template(file=self.tpl % template, searchList=[opts])
 
-        with open(self.output_path + file_name + ".cfg", 'w') as file:
+        with open(self.path + file_name + ".cfg", 'w') as file:
             file.write(str(render))
