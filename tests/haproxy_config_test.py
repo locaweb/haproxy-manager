@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # Copyright 2013 Locaweb.
 # All Rights Reserved.
 #
@@ -16,25 +15,21 @@
 #
 # @author: Willian Molinari (PotHix), Locaweb.
 
-import os
-import re
+from haproxy_manager.haproxy_config import HaproxyConfig
+
+import unittest
 
 
-class ConfigWriter(object):
+class ConfigWriterTest(unittest.TestCase):
 
-    def __init__(self, main_path="/etc/haproxy/"):
-        self.main_path = main_path
-        self.config_file = ""
+    def setUp(self):
+        self.clazz = HaproxyConfig('tests/output/')
 
-    def concat(self):
-        path = self.main_path + "conf.d/"
-        files = [
-            open(path + i).read()
-            for i in os.listdir(path)
-            if not re.match(r'\..*', i)  # Avoiding ".files"
-        ]
-        return "\n".join(files)
+    def test_concat(self):
+        config = "machine0001c\n\nmachine0002c\n\nmachine0003c\n"
+        self.assertEqual(self.clazz.concat(), config)
 
-    def write(self, content):
-        with open(self.main_path + "haproxy.cfg", 'w') as file:
-            file.write(content)
+    def test_write(self):
+        config = "machine0001c\n\nmachine0002c\n\nmachine0003c\n"
+        self.clazz.write(self.clazz.concat())
+        self.assertEqual(open("tests/output/haproxy.cfg").read(), config)

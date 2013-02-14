@@ -21,7 +21,7 @@ import os
 from Cheetah.Template import Template
 
 
-class FileWriter(object):
+class ConfigFiles(object):
 
     def __init__(self, path="/etc/haproxy/conf.d/"):
         self.tpl = os.path.join(os.path.dirname(__file__), 'templates/%s.tmpl')

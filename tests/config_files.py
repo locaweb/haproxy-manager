@@ -15,21 +15,21 @@
 #
 # @author: Willian Molinari (PotHix), Locaweb.
 
-from haproxy_manager.config_writer import ConfigWriter
+from haproxy_manager.config_files import ConfigFiles
 
 import unittest
 
 
-class ConfigWriterTest(unittest.TestCase):
+class FileWriterTest(unittest.TestCase):
 
     def setUp(self):
-        self.writer = ConfigWriter('tests/output/')
+        self.clazz = ConfigFiles('tests/output/')
 
-    def test_concat(self):
-        config = "machine0001c\n\nmachine0002c\n\nmachine0003c\n"
-        self.assertEqual(self.writer.concat(), config)
+    def test_global_file_writing(self):
+        self.clazz.global_writer({"name": "machine0001"})
 
-    def test_write(self):
-        config = "machine0001c\n\nmachine0002c\n\nmachine0003c\n"
-        self.writer.write(self.writer.concat())
-        self.assertEqual(open("tests/output/haproxy.cfg").read(), config)
+    def test_backend_file_writing(self):
+        self.clazz.backend_writer({"name": "machine0001"})
+
+    def test_frontend_file_writing(self):
+        self.clazz.frontend_writer({"name": "machine0001"})

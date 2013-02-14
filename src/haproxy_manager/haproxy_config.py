@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Copyright 2013 Locaweb.
 # All Rights Reserved.
 #
@@ -15,21 +16,25 @@
 #
 # @author: Willian Molinari (PotHix), Locaweb.
 
-from haproxy_manager.file_writer import FileWriter
+import os
+import re
 
-import unittest
 
+class HaproxyConfig(object):
 
-class FileWriterTest(unittest.TestCase):
+    def __init__(self, main_path="/etc/haproxy/"):
+        self.main_path = main_path
+        self.config_file = ""
 
-    def setUp(self):
-        self.writer = FileWriter('tests/output/')
+    def concat(self):
+        path = self.main_path + "conf.d/"
+        files = [
+            open(path + i).read()
+            for i in os.listdir(path)
+            if not re.match(r'\..*', i)  # Avoiding ".files"
+        ]
+        return "\n".join(files)
 
-    def test_global_file_writing(self):
-        self.writer.global_writer({"name": "machine0001"})
-
-    def test_backend_file_writing(self):
-        self.writer.backend_writer({"name": "machine0001"})
-
-    def test_frontend_file_writing(self):
-        self.writer.frontend_writer({"name": "machine0001"})
+    def write(self, content):
+        with open(self.main_path + "haproxy.cfg", 'w') as file:
+            file.write(content)
