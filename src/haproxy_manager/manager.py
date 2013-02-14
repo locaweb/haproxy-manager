@@ -38,7 +38,6 @@ class Manager(object):
             for f in os.listdir(self.main_path)
             if re.match(regex, f) and os.path.isfile(self.main_path + f)
         ]
-        files.sort()
         return files
 
     def get(self, file_name):

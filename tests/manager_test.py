@@ -35,9 +35,9 @@ class ManagerTest(unittest.TestCase):
 
     def test_list(self):
         file_list = [
-            {"name": "backend-machine0001"},
             {"name": "frontend-machine0001"},
             {"name": "global"},
+            {"name": "backend-machine0001"},
         ]
         self.assertEqual(self.manager.list(), file_list)
 
