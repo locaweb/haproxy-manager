@@ -42,13 +42,13 @@ class ConfigFiles(object):
         file_name = "90-%s-%s" % (name, opts["name"])
         self._write(name, file_name, opts)
 
-    def read(self, file_type, file_name):
+    def read(self, ftype, fname):
         if file_type is "frontend" or file_type is "backend":
-            path = "%s/90-%s-%s.cfg" % (self.path, file_type, file_name)
+            prefix = "90"
         else:
-            path = "%s/00-%s-%s.cfg" % (self.path, file_type, file_name)
+            prefix = "00"
 
-        with open(path) as f:
+        with open("%s/%s-%s-%s.cfg" % (prefix, self.path, ftype, fname)) as f:
             file_params =  dict([
                 map(lambda x: x.strip(), i.strip().split(" ", 1))
                 for i in f.readlines()
