@@ -43,18 +43,23 @@ class ConfigFiles(object):
         self._write(name, file_name, opts)
 
     def read(self, ftype, fname):
-        if ftype == "frontend" or ftype == "backend":
-            prefix = "90"
-        else:
-            prefix = "00"
+        file_name = self.file_name_for(ftype, fname)
 
-        with open("%s/%s-%s-%s.cfg" % (self.path, prefix, ftype, fname)) as f:
-            file_params =  dict([
+        with open("%s/%s" % (self.path, file_name)) as f:
+            file_params = dict([
                 map(lambda x: x.strip(), i.strip().split(" ", 1))
                 for i in f.readlines()
             ])
 
             return file_params
+
+    def file_name_for(self, ftype, fname):
+        if ftype == "frontend" or ftype == "backend":
+            path = "90-%s-%s.cfg" % (ftype, fname)
+        else:
+            path = "00-%s.cfg" % ftype
+
+        return path
 
     def _write(self, template, file_name, opts={}):
         render = Template(file=self.tpl % template, searchList=[opts])

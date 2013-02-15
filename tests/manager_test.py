@@ -16,6 +16,7 @@
 # @author: Willian Molinari (PotHix), Locaweb.
 
 from haproxy_manager.manager import Manager
+from haproxy_manager.config_files import ConfigFiles
 
 import os
 import glob
@@ -25,11 +26,16 @@ import unittest
 class ManagerTest(unittest.TestCase):
 
     def setUp(self):
-        self.manager = Manager('tests/output/')
-        self.template_val = self.manager.get("frontend-machine0001")
+        self.test_path = 'tests/output/'
+        self.manager = Manager(self.test_path)
+
+        self.config_files = ConfigFiles(self.test_path)
+        self.config_files.global_writer({"name": "machine0001"})
+        self.config_files.backend_writer({"name": "machine0001"})
+        self.config_files.frontend_writer({"name": "machine0001"})
 
     def tearDown(self):
-        filelist = glob.glob("*.cfg")
+        filelist = glob.glob(self.test_path + "/*.cfg")
         for f in filelist:
             os.remove(f)
 
@@ -42,9 +48,13 @@ class ManagerTest(unittest.TestCase):
         self.assertEqual(self.manager.list(), file_list)
 
     def test_get(self):
-        name = "frontend-machine0001"
-        self.assertNotEqual(len(self.manager.get(name)), 0)
+        ftype, fname = "frontend", "machine0001"
+        self.assertNotEqual(len(self.manager.get(ftype, fname)), 0)
 
     def test_get_empty_value_for_nonexistant_config(self):
-        name = "frontend-invalid0001"
-        self.assertEqual(self.manager.get(name), {})
+        ftype, fname = "frontend", "invalid0001"
+        self.assertEqual(self.manager.get(ftype, fname), {})
+
+    def test_delete(self):
+        ftype, fname = "frontend", "machine0001"
+        self.manager.delete(ftype, fname)

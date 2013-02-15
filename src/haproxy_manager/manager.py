@@ -26,6 +26,7 @@ class Manager(object):
 
     def __init__(self, main_path="/etc/haproxy/conf.d/"):
         self.main_path = main_path
+        self.config_files = ConfigFiles(self.main_path)
 
     def list(self):
         # Get the file name
@@ -40,16 +41,16 @@ class Manager(object):
         ]
         return files
 
-    def get(self, file_name):
-        ftype, fname = file_name.split("-")
+    def get(self, ftype, fname):
         try:
-            c = ConfigFiles(self.main_path)
-            return c.read(ftype, fname)
+            return self.config_files.read(ftype, fname)
         except IOError:
             return {}
 
-    def update(self):
-        pass
+    def update(self, ftype, fname):
+        # TODO: Needs implementation
+        file_name = self.config_files.file_name_for(ftype, fname)
 
-    def delete(self):
-        pass
+    def delete(self, ftype, fname):
+        file_name = self.config_files.file_name_for(ftype, fname)
+        os.remove(self.main_path + file_name)
