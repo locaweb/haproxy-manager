@@ -18,6 +18,7 @@
 
 import os
 import re
+import glob
 
 from haproxy_manager.config_files import ConfigFiles
 
@@ -28,16 +29,16 @@ class Manager(object):
         self.main_path = main_path
         self.config_files = ConfigFiles(self.main_path)
 
-    def list(self):
+    def list(self, ftype):
         # Get the file name
         # 90-frontend-machine0001.cfg
-        #    ^^^^^^^^^^^^^^^^^^^^
-        regex = r'^[^.][0-9]+-([a-zA-Z0-9-]*).cfg$'
+        #             ^^^^^^^^^^^
+        regex = r'.*-([a-zA-Z0-9]+).cfg'
 
         files = [
             {"name": re.match(regex, f).group(1)}
-            for f in os.listdir(self.main_path)
-            if re.match(regex, f) and os.path.isfile(self.main_path + f)
+            for f in glob.glob(self.main_path + "/*%s-*.cfg" % ftype)
+            if os.path.isfile(f)
         ]
         return files
 
@@ -47,10 +48,8 @@ class Manager(object):
         except IOError:
             return {}
 
-    def update(self, ftype, fname):
-        # TODO: Needs implementation
-        file_name = self.config_files.file_name_for(ftype, fname)
+    def update(self, ftype, fname, opts):
+        self.config_files.update(ftype, fname, opts)
 
     def delete(self, ftype, fname):
-        file_name = self.config_files.file_name_for(ftype, fname)
-        os.remove(self.main_path + file_name)
+        self.config_files.remove(ftype, fname)

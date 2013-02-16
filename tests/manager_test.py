@@ -22,6 +22,8 @@ import os
 import glob
 import unittest
 
+DEFAULT_TEST_ARGS = {"name": "machine0001", "type": "frontend", "args":{}}
+
 
 class ManagerTest(unittest.TestCase):
 
@@ -30,9 +32,9 @@ class ManagerTest(unittest.TestCase):
         self.manager = Manager(self.test_path)
 
         self.config_files = ConfigFiles(self.test_path)
-        self.config_files.global_writer({"name": "machine0001"})
-        self.config_files.backend_writer({"name": "machine0001"})
-        self.config_files.frontend_writer({"name": "machine0001"})
+        self.config_files.global_writer(DEFAULT_TEST_ARGS)
+        self.config_files.backend_writer(DEFAULT_TEST_ARGS)
+        self.config_files.frontend_writer(DEFAULT_TEST_ARGS)
 
     def tearDown(self):
         filelist = glob.glob(self.test_path + "/*.cfg")
@@ -41,14 +43,13 @@ class ManagerTest(unittest.TestCase):
 
     def test_list(self):
         file_list = [
-            {"name": "frontend-machine0001"},
-            {"name": "global"},
-            {"name": "backend-machine0001"},
+            {"name": "machine0001"},
         ]
-        self.assertEqual(self.manager.list(), file_list)
+        self.assertEqual(self.manager.list("frontend"), file_list)
 
     def test_get(self):
         ftype, fname = "frontend", "machine0001"
+        self.config_files.frontend_writer(DEFAULT_TEST_ARGS)
         self.assertNotEqual(len(self.manager.get(ftype, fname)), 0)
 
     def test_get_empty_value_for_nonexistant_config(self):
@@ -57,4 +58,9 @@ class ManagerTest(unittest.TestCase):
 
     def test_delete(self):
         ftype, fname = "frontend", "machine0001"
+        self.config_files.frontend_writer(DEFAULT_TEST_ARGS)
         self.manager.delete(ftype, fname)
+
+    def test_update(self):
+        ftype, fname = "frontend", "machine0001"
+        self.manager.update(ftype, fname, {"mode": "udp"})

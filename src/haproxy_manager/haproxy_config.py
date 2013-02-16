@@ -24,7 +24,6 @@ class HaproxyConfig(object):
 
     def __init__(self, main_path="/etc/haproxy/"):
         self.main_path = main_path
-        self.config_file = ""
 
     def concat(self):
         path = self.main_path + "conf.d/"
