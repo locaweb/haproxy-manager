@@ -10,7 +10,7 @@ setup(
     package_dir={'': 'src'},
     packages=find_packages('src'),
     data_files=[
-        ('/usr/sbin', ['usr/sbin/haproxy-manager']),
+        ('/usr/sbin', ['bin/haproxy-manager']),
         ('/etc/haproxy-manager', ['etc/haproxy-manager.cfg']),
     ],
 )

@@ -24,4 +24,4 @@ test:
 	@$(venv_bin)/nosetests $(TEST)
 
 server:
-	@$(default_env) $(venv_bin)/python usr/sbin/haproxy-manager -a foreground
+	@$(default_env) $(venv_bin)/python bin/haproxy-manager -a foreground
