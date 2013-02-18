@@ -6,8 +6,10 @@ app = Flask(__name__)
 from haproxy_manager.manager import Manager
 
 
-@app.route("/list/<type>")
-def list(ftype): manager = Manager("tests/output/")
+@app.route("/list", defaults={'ftype': None})
+@app.route("/list/<ftype>")
+def list(ftype):
+    manager = Manager("tests/output/")
     return json.dumps(manager.list(ftype))
 
 

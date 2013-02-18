@@ -35,6 +35,11 @@ class Manager(object):
         #             ^^^^^^^^^^^
         regex = r'.*-([a-zA-Z0-9]+).cfg'
 
+        if ftype:
+            files = glob.glob(self.main_path + "/*%s-*.cfg" % ftype)
+        else:
+            files = glob.glob(self.main_path + "/*.cfg")
+
         files = [
             {"name": re.match(regex, f).group(1)}
             for f in glob.glob(self.main_path + "/*%s-*.cfg" % ftype)
