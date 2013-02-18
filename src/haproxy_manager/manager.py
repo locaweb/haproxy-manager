@@ -21,28 +21,26 @@ import re
 import glob
 
 from haproxy_manager.config_files import ConfigFiles
+from haproxy_manager.common.config import config
 
 
 class Manager(object):
 
-    def __init__(self, main_path="/etc/haproxy/conf.d/"):
-        self.main_path = main_path
-        self.config_files = ConfigFiles(self.main_path)
+    def __init__(self, path=config.get("haproxyfiles", "conf_files")):
+        self.path = path
+        self.config_files = ConfigFiles(self.path)
 
     def list(self, ftype):
-        # Get the file name
-        # 90-frontend-machine0001.cfg
-        #             ^^^^^^^^^^^
         regex = r'.*-([a-zA-Z0-9]+).cfg'
 
         if ftype:
-            files = glob.glob(self.main_path + "/*%s-*.cfg" % ftype)
+            files = glob.glob(self.path + "/*%s-*.cfg" % ftype)
         else:
-            files = glob.glob(self.main_path + "/*.cfg")
+            files = glob.glob(self.path + "/*.cfg")
 
         files = [
             {"name": re.match(regex, f).group(1)}
-            for f in glob.glob(self.main_path + "/*%s-*.cfg" % ftype)
+            for f in glob.glob(self.path + "/*%s-*.cfg" % ftype)
             if os.path.isfile(f)
         ]
         return files

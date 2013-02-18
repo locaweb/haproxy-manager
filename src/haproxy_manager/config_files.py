@@ -20,10 +20,12 @@ import os
 
 from Cheetah.Template import Template
 
+from haproxy_manager.common.config import config
+
 
 class ConfigFiles(object):
 
-    def __init__(self, path="/etc/haproxy/conf.d/"):
+    def __init__(self, path=config.get("haproxyfiles", "conf_files")):
         self.tpl = os.path.join(os.path.dirname(__file__), 'templates/%s.tmpl')
         self.path = path
 

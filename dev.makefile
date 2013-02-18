@@ -3,7 +3,9 @@ bin_python      = python
 venv_dir        = .venv
 venv_bin        = $(venv_dir)/bin
 
-default_env     = PYTHONPATH=src
+config_file     = etc/haproxy-manager.cfg
+
+default_env     = PYTHONPATH=src HAPROXYMANAGER_CFG=$(config_file)
 
 clean:
 	@find . -name '*.pyc' -delete
@@ -21,7 +23,7 @@ bootstrap: create_venv
 	$(venv_bin)/$(bin_pip) install -r pip-requires
 
 test:
-	@$(venv_bin)/nosetests $(TEST)
+	@$(default_env) $(venv_bin)/nosetests $(TEST)
 
 server:
 	@$(default_env) $(venv_bin)/python bin/haproxy-manager -a foreground

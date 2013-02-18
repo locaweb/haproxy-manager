@@ -22,7 +22,7 @@ import os
 import glob
 import unittest
 
-DEFAULT_TEST_ARGS = {"name": "machine0001", "type": "frontend", "args":{}}
+DEFAULT_TEST_ARGS = {"name": "machine0001", "type": "frontend", "args":{"maxconn":1}}
 
 
 class ManagerTest(unittest.TestCase):
