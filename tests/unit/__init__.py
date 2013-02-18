@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Copyright 2013 Locaweb.
 # All Rights Reserved.
 #
@@ -14,23 +15,3 @@
 #    limitations under the License.
 #
 # @author: Willian Molinari (PotHix), Locaweb.
-
-from haproxy_manager.config_files import ConfigFiles
-from tests.manager_test import DEFAULT_TEST_ARGS
-
-import unittest
-
-
-class ConfigFilesTest(unittest.TestCase):
-
-    def setUp(self):
-        self.clazz = ConfigFiles('tests/output/')
-
-    def test_global_file_writing(self):
-        self.clazz.global_writer(DEFAULT_TEST_ARGS)
-
-    def test_backend_file_writing(self):
-        self.clazz.backend_writer(DEFAULT_TEST_ARGS)
-
-    def test_frontend_file_writing(self):
-        self.clazz.frontend_writer(DEFAULT_TEST_ARGS)
