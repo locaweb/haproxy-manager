@@ -19,6 +19,16 @@ from haproxy_manager.haproxy_config import HaproxyConfig
 
 import unittest
 
+FILE_CONTENTS = """frontend machine0001
+        maxconn         100
+
+frontend machine0002
+        maxconn         100
+
+frontend machine0003
+        maxconn         100
+"""
+
 
 class ConfigWriterTest(unittest.TestCase):
 
@@ -26,10 +36,10 @@ class ConfigWriterTest(unittest.TestCase):
         self.clazz = HaproxyConfig('tests/output/')
 
     def test_concat(self):
-        config = "machine0001c\n\nmachine0002c\n\nmachine0003c\n"
-        self.assertEqual(self.clazz.concat(), config)
+        self.assertEqual(self.clazz.concat(), FILE_CONTENTS)
 
     def test_write(self):
-        config = "machine0001c\n\nmachine0002c\n\nmachine0003c\n"
         self.clazz.write(self.clazz.concat())
-        self.assertEqual(open("tests/output/haproxy.cfg").read(), config)
+        self.assertEqual(
+            open("tests/output/haproxy.cfg").read(), FILE_CONTENTS
+        )

@@ -1,1 +1,2 @@
-machine0002c
+frontend machine0002
+        maxconn         100
