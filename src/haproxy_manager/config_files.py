@@ -26,23 +26,19 @@ from haproxy_manager.common.config import config
 class ConfigFiles(object):
 
     def __init__(self, path=config.get("haproxyfiles", "conf_files")):
-        self.tpl = os.path.join(os.path.dirname(__file__), 'templates/%s.tmpl')
         self.path = path
 
     def global_writer(self, opts):
-        ftype = "global"
-        file_name = self.file_name_for(ftype, "", ".cfg")
-        self._write(ftype, file_name, opts)
+        file_name = self.file_name_for("global", "", ".cfg")
+        self._write(file_name, opts)
 
     def frontend_writer(self, opts):
-        ftype = "frontend"
-        file_name = self.file_name_for(ftype, opts["name"], ".cfg")
-        self._write(ftype, file_name, opts)
+        file_name = self.file_name_for("frontend", opts["name"], ".cfg")
+        self._write(file_name, opts)
 
     def backend_writer(self, opts):
-        ftype = "backend"
-        file_name = self.file_name_for(ftype, opts["name"], ".cfg")
-        self._write(ftype, file_name, opts)
+        file_name = self.file_name_for("backend", opts["name"], ".cfg")
+        self._write(file_name, opts)
 
     def read(self, ftype, fname):
         file_name = self.file_name_for(ftype, fname, ".cfg")
@@ -64,7 +60,7 @@ class ConfigFiles(object):
         args = {"name": fname, "type": ftype}
         args["args"] = [[k,v] for k,v in opts.iteritems()]
 
-        self._write(ftype, file_name, args)
+        self._write(file_name, args)
 
     def file_name_for(self, ftype, fname, ext=""):
         if ftype == "frontend" or ftype == "backend":
@@ -74,9 +70,9 @@ class ConfigFiles(object):
 
         return path
 
-    def _write(self, template, file_name, opts):
-        env = Environment(loader=PackageLoader("haproxy_manager", "templates"))
-        template = env.get_template("%s.tmpl" % template)
+    def _write(self, file_name, opts):
+        env = Environment(loader=PackageLoader("haproxy_manager", "."))
+        template = env.get_template("template.tmpl")
 
         with open(self.path + file_name, 'w') as file:
             file.write(template.render(opts))
