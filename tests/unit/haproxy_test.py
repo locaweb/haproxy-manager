@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # Copyright 2013 Locaweb.
 # All Rights Reserved.
 #
@@ -16,24 +15,31 @@
 #
 # @author: Willian Molinari (PotHix), Locaweb.
 
-import os
-import re
+from haproxy_manager.haproxy import Haproxy
+
+import unittest
+
+FILE_CONTENTS = """frontend machine0001
+        maxconn         100
+
+frontend machine0002
+        maxconn         100
+
+frontend machine0003
+        maxconn         100
+"""
 
 
-class HaproxyConfig(object):
+class HaproxyTest(unittest.TestCase):
 
-    def __init__(self, main_path="/etc/haproxy/"):
-        self.main_path = main_path
+    def setUp(self):
+        self.clazz = Haproxy('tests/output/')
 
-    def concat(self):
-        path = self.main_path + "conf.d/"
-        files = [
-            open(path + i).read()
-            for i in os.listdir(path)
-            if not re.match(r'\..*', i)  # Avoiding ".files"
-        ]
-        return "\n".join(files)
+    def test_concat_files(self):
+        self.assertEqual(self.clazz.concat_files(), FILE_CONTENTS)
 
-    def write(self, content):
-        with open(self.main_path + "haproxy.cfg", 'w') as file:
-            file.write(content)
+    def test_write_config(self):
+        self.clazz.write_config(self.clazz.concat_files())
+        self.assertEqual(
+            open("tests/output/haproxy.cfg").read(), FILE_CONTENTS
+        )
