@@ -1,4 +1,3 @@
-$type $name
-#for $param in $args:
-    $param[0]      $param[1]
-#end for
+{{ type }} {{ name }}
+{% for param in args %}	{{ param[0] }}		{{ param[1] }}
+{% endfor %}

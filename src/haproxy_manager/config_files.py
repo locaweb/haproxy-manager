@@ -18,7 +18,7 @@
 
 import os
 
-from Cheetah.Template import Template
+from jinja2 import Template, Environment, PackageLoader
 
 from haproxy_manager.common.config import config
 
@@ -75,7 +75,8 @@ class ConfigFiles(object):
         return path
 
     def _write(self, template, file_name, opts):
-        render = Template(file=self.tpl % template, searchList=[opts])
+        env = Environment(loader=PackageLoader("haproxy_manager", "templates"))
+        template = env.get_template("%s.tmpl" % template)
 
         with open(self.path + file_name, 'w') as file:
-            file.write(str(render))
+            file.write(template.render(opts))

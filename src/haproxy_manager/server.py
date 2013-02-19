@@ -20,12 +20,14 @@ def conf(ftype, fname):
     For PUT opts must be: {"arg1":1, "arg2":2}
     """
     manager = Manager(config.get("haproxyfiles", "conf_files"))
+    response = {"message": ""}
 
     if request.method == 'GET':
         return jsonify(manager.get(ftype, fname))
 
     elif request.method == 'PUT':
-        return jsonify(manager.update(ftype, fname, request.json))
+        manager.update(ftype, fname, request.json)
+        return jsonify(response)
 
     elif request.method == 'DELETE':
         return jsonify(manager.delete(ftype, fname))
