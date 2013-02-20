@@ -18,7 +18,9 @@
 
 import os
 import re
-import subprocess
+import signal
+
+from haproxy_manager.common.config import config
 
 
 class Haproxy(object):
@@ -40,4 +42,13 @@ class Haproxy(object):
             file.write(content)
 
     def restart(self):
-        subprocess.Popen(["haproxy", "-f", "/etc/haproxy/haproxy.cfg", "-p", "/var/run/haproxy.pid", "-sf", "$(cat /var/run/haproxy.pid)"])
+        pid = config.get("haproxyfiles", "pid_file")
+
+        try:
+            with open(pid) as f:
+                pids = f.read()
+                print pids
+                os.kill(pids, signal.SIGTTOU)
+                os.kill(pids, signal.SIGTTIN)
+        except:
+            print "Missing pid file to restart gracefully. Cannot restart."

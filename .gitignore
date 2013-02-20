@@ -1,3 +1,4 @@
 *.pyc
 .noseids
 */output/*.cfg
+*.pid

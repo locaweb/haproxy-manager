@@ -43,3 +43,7 @@ class HaproxyTest(unittest.TestCase):
         self.assertEqual(
             open("tests/output/haproxy.cfg").read(), FILE_CONTENTS
         )
+
+    def test_restart(self):
+        # FIXME: test for real
+        self.clazz.restart()
