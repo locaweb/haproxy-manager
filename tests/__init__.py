@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright 2013 Locaweb.
+# Copyright 2016 Locaweb.
 # All Rights Reserved.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
